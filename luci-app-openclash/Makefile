@@ -3,12 +3,16 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=luci-app-openclash
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 PKG_VERSION:=0.47.075
 =======
 PKG_VERSION:=0.47.086
 >>>>>>> upstream/master
 =======
 PKG_VERSION:=0.47.088
+>>>>>>> upstream/master
+=======
+PKG_VERSION:=0.47.097
 >>>>>>> upstream/master
 PKG_MAINTAINER:=vernesong <https://github.com/vernesong/OpenClash>
 
@@ -160,7 +164,8 @@ define Package/$(PKG_NAME)/postrm
 	uci -q delete ucitrack.@openclash[-1]
 	uci -q commit ucitrack
 	}
-	rm -rf /tmp/luci-*
+	rm -rf /tmp/luci-indexcache /tmp/luci-indexcache.* /var/luci-indexcache /var/luci-indexcache.* >/dev/null 2>&1
+	rm -rf /tmp/luci-modulecache /var/luci-modulecache >/dev/null 2>&1
 	exit 0
 endef
 
