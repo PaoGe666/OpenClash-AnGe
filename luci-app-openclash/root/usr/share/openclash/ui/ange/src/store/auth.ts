@@ -122,10 +122,33 @@ export const handlePossibleAuthRequiredResponse = async (
   return true
 }
 
+const getDashboardLocale = () => {
+  if (typeof window === 'undefined') {
+    return 'en-US'
+  }
+
+  return window.localStorage.getItem('config/language') || navigator.language || 'en-US'
+}
+
+const mergeServerApiHeaders = (headers?: HeadersInit) => {
+  const mergedHeaders = new Headers(headers)
+
+  if (!mergedHeaders.has('Accept-Language')) {
+    mergedHeaders.set('Accept-Language', getDashboardLocale())
+  }
+
+  if (!mergedHeaders.has('X-Zashboard-Locale')) {
+    mergedHeaders.set('X-Zashboard-Locale', getDashboardLocale())
+  }
+
+  return mergedHeaders
+}
+
 export const fetchServerApi = async (input: RequestInfo | URL, init: RequestInit = {}) => {
   const response = await fetch(input, {
     credentials: 'same-origin',
     ...init,
+    headers: mergeServerApiHeaders(init.headers),
   })
 
   await handlePossibleAuthRequiredResponse(response)

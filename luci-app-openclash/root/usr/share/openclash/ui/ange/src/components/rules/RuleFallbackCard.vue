@@ -3,9 +3,9 @@
     v-if="rule"
     class="card"
   >
-    <div class="flex flex-col gap-2 p-2 text-sm">
+    <div class="app-card-padding flex flex-col gap-3 text-sm">
       <div class="flex flex-wrap items-center gap-2">
-        <span class="font-medium">未命中规则缓存，将落到兜底规则</span>
+        <span class="font-medium">{{ $t('ruleLookupFallbackMatched') }}</span>
       </div>
 
       <div class="flex min-h-6 flex-wrap items-center gap-1 md:gap-2">

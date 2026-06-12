@@ -14,11 +14,13 @@
     </select>
     <button
       v-if="!disableEditBackend"
-      class="btn join-item btn-sm"
+      class="btn join-item btn-sm px-3 whitespace-nowrap"
       @click="editBackend"
       :disabled="!activeBackend"
+      :aria-label="t('editBackendTitle')"
+      :title="t('editBackendTitle')"
     >
-      <PencilIcon class="h-4 w-4" />
+      {{ t('editBackendTitle') }}
     </button>
     <button
       class="btn join-item btn-sm"
@@ -37,8 +39,9 @@ import { ROUTE_NAME } from '@/constant'
 import { getLabelFromBackend } from '@/helper/utils'
 import router from '@/router'
 import { activeBackend, activeUuid, backendList } from '@/store/setup'
-import { PencilIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { PlusIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import EditBackendModal from './EditBackendModal.vue'
 
 withDefaults(
@@ -60,6 +63,7 @@ const opts = computed(() => {
 })
 
 const showEditModal = ref(false)
+const { t } = useI18n()
 
 const addBackend = () => {
   activeUuid.value = null

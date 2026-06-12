@@ -33,7 +33,7 @@
     </div>
     <div
       v-else
-      class="card m-2 flex-row p-2 text-sm"
+      class="card app-card-padding m-3 flex-row text-sm"
     >
       {{ $t('noContent') }}
     </div>

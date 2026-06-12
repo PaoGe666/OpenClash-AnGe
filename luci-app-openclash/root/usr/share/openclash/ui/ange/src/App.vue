@@ -159,7 +159,7 @@ const appStyles = computed(() => {
   return [
     backgroundImage.value,
     {
-      '--app-space': '0.5rem',
+      '--app-space': '0.75rem',
       '--radius-box': boxRadius,
       '--radius-selector': fieldRadius,
       '--radius-field': fieldRadius,

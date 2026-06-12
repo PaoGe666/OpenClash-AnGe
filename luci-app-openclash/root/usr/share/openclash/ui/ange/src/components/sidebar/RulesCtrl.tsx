@@ -71,7 +71,10 @@ export default defineComponent({
       return `${referencedRuleTotal.value}`
     })
     const refreshSummaryText = computed(() => {
-      return `规则:${ruleCountDisplayText.value}/源:${providerCountDisplayText.value}`
+      return t('ruleRefreshSummary', {
+        rules: ruleCountDisplayText.value,
+        sources: providerCountDisplayText.value,
+      })
     })
 
     const handlerClickUpgradeAllProviders = async () => {
@@ -85,7 +88,7 @@ export default defineComponent({
           applyRuleProviderCacheStats(result)
           showNotification({
             key: 'ruleRefreshCompletedTip',
-            content: '已停止刷新规则',
+            content: 'ruleRefreshStopped',
             type: 'alert-warning',
             timeout: 2000,
           })
@@ -95,7 +98,7 @@ export default defineComponent({
         if (referencedProviderRefreshNames.value.length === 0) {
           showNotification({
             key: 'ruleRefreshNoReferencedProviders',
-            content: '当前没有引用到任何规则源',
+            content: 'noReferencedRuleProviders',
             type: 'alert-warning',
             timeout: 2000,
           })
@@ -176,7 +179,7 @@ export default defineComponent({
         <TextInput
           class={isLargeCtrlsBar.value ? 'w-80' : 'min-w-0 flex-1'}
           v-model={rulesFilter.value}
-          placeholder={`${t('search')} 域名 / IP / 关键字`}
+          placeholder={t('ruleSearchPlaceholder')}
           clearable={true}
         />
       )

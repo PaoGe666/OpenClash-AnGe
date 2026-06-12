@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="flex flex-col gap-2 p-2 text-sm">
+    <div class="app-card-padding flex flex-col gap-3 text-sm">
       <div class="flex flex-wrap items-center gap-2">
         <span>{{ index }}.</span>
         <span class="text-main font-medium">
@@ -52,7 +52,7 @@
           v-else
           class="text-sm"
         >
-          未在当前规则顺序中找到对应 RuleSet
+          {{ t('ruleLookupMissingRuleSet') }}
         </span>
       </div>
 
@@ -68,7 +68,10 @@
         </div>
       </div>
 
-      <div class="text-base-content/70 flex items-center gap-2 text-sm font-normal">
+      <div
+        v-if="result.url"
+        class="text-base-content/70 flex items-center gap-2 text-sm font-normal"
+      >
         <a
           :href="result.url"
           target="_blank"
@@ -80,7 +83,7 @@
         <button
           class="btn btn-ghost btn-xs"
           type="button"
-          title="复制链接"
+          :title="t('copyLink')"
           @click="copyUrl(result.url)"
         >
           <DocumentDuplicateIcon class="h-3.5 w-3.5" />
@@ -98,8 +101,11 @@ import { getLatencyByName, proxyMap } from '@/store/proxies'
 import { displayLatencyInRule, displayNowNodeInRule } from '@/store/settings'
 import type { Rule } from '@/types'
 import { DocumentDuplicateIcon } from '@heroicons/vue/24/outline'
+import { useI18n } from 'vue-i18n'
 import ProxyGroupNow from '../proxies/ProxyGroupNow.vue'
 import ProxyName from '../proxies/ProxyName.vue'
+
+const { t } = useI18n()
 
 defineProps<{
   index: number

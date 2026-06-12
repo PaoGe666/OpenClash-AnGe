@@ -4,7 +4,7 @@
 
 AnGe-ClashBoard 是一个基于 `Vue 3 + TypeScript + Vite` 的 Clash 面板，面向 `Clash API`、`Mihomo`、`OpenClash`、`Nikki` 和 `sing-box` 的运行态管理、观测与排错。
 
-当前版本为 `1.85`，基于开源 [zashboard](https://github.com/Zephyruso/zashboard) 二次开发。
+当前版本为 `1.91`，基于开源 [zashboard](https://github.com/Zephyruso/zashboard) 二次开发。
 
 ## 教学视频
 
@@ -198,16 +198,28 @@ ZASHBOARD_DB_PATH
 - 根据 YAML 中的 `interval` 自动更新缓存
 - 刷新规则时显示累计规则数量与手动停止
 
-规则源默认读取：
+规则源需要配置代理端 OpenWrt 的 SSH 连接。服务会通过 SSH 实时读取代理端当前配置，不读取本机 OpenClash 文件，也不内置规则源模板。
+
+可在页面的“修改后端配置”弹窗里，为对应后端填写规则源类型、SSH 端口、账号和密码；规则源 SSH 主机直接使用该后端的“主机”。也可以通过环境变量预设：
 
 ```bash
-data/rule-source.yaml
+ZASHBOARD_OPENWRT_SSH_HOST
+ZASHBOARD_OPENWRT_SSH_PORT
+ZASHBOARD_OPENWRT_SSH_USER
+ZASHBOARD_OPENWRT_SSH_PASSWORD
+ZASHBOARD_RULE_SOURCE_PLUGIN
 ```
 
-也可通过环境变量覆盖：
+服务会自动识别代理端的 OpenClash 或 Nikki：
+
+- OpenClash：读取远程 `/etc/config/openclash`，解析其中真实的 `option config_path`，再读取对应 YAML 的 `rule-providers`。
+- Nikki：优先从远程进程命令行和 `/etc/config/nikki` 提取实际 YAML 路径，再校验其中的 `rule-providers`。
+
+OpenClash 远程 UCI 路径不在默认位置时可覆盖：
 
 ```bash
-ZASHBOARD_RULE_SOURCE_PATH
+ZASHBOARD_OPENCLASH_UCI_PATH
+ZASHBOARD_OPENCLASH_CONFIG_DIR
 ```
 
 ## 项目结构

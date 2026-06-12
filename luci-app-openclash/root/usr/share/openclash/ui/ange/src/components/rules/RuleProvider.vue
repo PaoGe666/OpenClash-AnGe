@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card hover:bg-base-200 w-full cursor-pointer gap-2 p-2 text-sm"
+    class="card hover:bg-base-200 app-card-padding w-full cursor-pointer gap-3 text-sm"
     @click="openRuleProviderDetails"
   >
     <div class="flex h-6 items-center gap-2 leading-6">
@@ -55,7 +55,7 @@
       <button
         class="btn btn-ghost btn-xs"
         type="button"
-        title="复制链接"
+        :title="t('copyLink')"
         @click.stop="copyUrl(providerUrl)"
       >
         <DocumentDuplicateIcon class="h-3.5 w-3.5" />
@@ -85,8 +85,10 @@ import type { RuleProvider } from '@/types'
 import { ArrowPathIcon, DocumentDuplicateIcon } from '@heroicons/vue/24/outline'
 import { twMerge } from 'tailwind-merge'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const isUpdating = ref(false)
+const { t } = useI18n()
 const props = defineProps<{
   ruleProvider: RuleProvider
   index: number
@@ -147,7 +149,7 @@ const updateRuleProviderClickHandler = async () => {
       ) {
         showNotification({
           key: 'ruleRefreshCompletedTip',
-          content: '已停止刷新规则',
+          content: 'ruleRefreshStopped',
           type: 'alert-warning',
           timeout: 2000,
         })

@@ -6,7 +6,7 @@
         class="min-h-0 flex-1 overflow-x-hidden overflow-y-auto"
         :style="padding"
       >
-        <div class="flex flex-col gap-2 p-2">
+        <div class="flex flex-col gap-3 p-3">
           <template
             v-if="
               (rulesTabShow === RULE_TAB_TYPE.RULES || rulesTabShow === RULE_TAB_TYPE.PROVIDER) &&
@@ -15,34 +15,34 @@
           >
             <div
               v-if="isRuleLookupLoading"
-              class="card p-2 text-sm"
+              class="card app-card-padding text-sm"
             >
-              正在查询规则缓存...
+              {{ t('ruleLookupLoading') }}
             </div>
             <div
               v-else-if="ruleLookupError"
-              class="card p-2 text-sm"
+              class="card app-card-padding text-sm"
             >
               {{ ruleLookupError }}
             </div>
             <template v-else>
               <div
                 v-if="ruleLookupResults.length === 0 && ruleLookupDirectRules.length === 0"
-                class="card p-2 text-sm"
+                class="card app-card-padding text-sm"
               >
-                <div>未命中规则缓存。</div>
+                <div>{{ t('ruleLookupEmpty') }}</div>
                 <div
                   v-if="ruleLookupUnsupported.length > 0"
                   class="text-base-content/70 mt-1 text-xs"
                 >
-                  当前还有 {{ ruleLookupUnsupported.length }} 个 `.mrs` 规则集暂不支持解析。
+                  {{ t('ruleLookupUnsupportedHint', { count: ruleLookupUnsupported.length }) }}
                 </div>
               </div>
               <div
                 v-else
-                class="card p-2 text-sm"
+                class="card app-card-padding text-sm"
               >
-                只查询10行最相关数据：
+                {{ t('ruleLookupTopMatches') }}
               </div>
               <RuleFallbackCard
                 v-if="
@@ -66,9 +66,9 @@
               />
               <div
                 v-if="ruleLookupUnsupported.length > 0"
-                class="card p-2 text-xs"
+                class="card app-card-padding text-xs"
               >
-                暂不支持解析的规则集：
+                {{ t('ruleLookupUnsupportedProviders') }}
                 {{ ruleLookupUnsupported.map((item) => item.name).join('、') }}
               </div>
             </template>
@@ -97,7 +97,7 @@
       class="min-h-0 flex-1"
       :style="virtualScrollerStyle"
       :data="renderRules"
-      :size="64"
+      :size="84"
     >
       <template #default="{ item: rule }: { item: Rule }">
         <RuleCard
@@ -151,10 +151,12 @@ import {
 } from '@/store/rules'
 import type { Rule } from '@/types'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const autoRuleCacheBootstrapAttempted = ref(false)
 const observedRefreshRunId = ref(0)
 const isRulesTabHydrated = ref(false)
+const { t } = useI18n()
 
 const syncRuleCacheStats = async () => {
   try {
@@ -278,14 +280,19 @@ watch(
 
     await fetchRules()
 
+    const hasError = ruleRefreshState.value.errors > 0
+    const errorMessage = ruleRefreshState.value.lastError.trim()
+
     showNotification({
       key: 'ruleRefreshCompletedTip',
-      content: 'ruleRefreshCompletedTip',
-      params: {
-        number: `${ruleRefreshState.value.totalRules}`,
-      },
-      type: ruleRefreshState.value.errors > 0 ? 'alert-warning' : 'alert-success',
-      timeout: 2500,
+      content: hasError && errorMessage ? errorMessage : 'ruleRefreshCompletedTip',
+      params: hasError
+        ? {}
+        : {
+            number: `${ruleRefreshState.value.totalRules}`,
+          },
+      type: hasError ? 'alert-warning' : 'alert-success',
+      timeout: hasError ? 5000 : 2500,
     })
   },
 )

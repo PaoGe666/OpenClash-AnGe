@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.87](https://github.com/liandu2024/AnGe-ClashBoard/compare/v1.86...v1.87) (2026-06-12)
+
+### Bug Fixes
+
+* remove the bundled rule-source template and read rule-provider URLs from the current OpenClash `config_path` source
+
+## [1.86](https://github.com/liandu2024/AnGe-ClashBoard/compare/v1.85...v1.86) (2026-06-12)
+
+### Bug Fixes
+
+* keep managed rule-source syncing from dropping providers during single or bulk rule refreshes, and report missing provider source URLs explicitly
+
 ## [1.85](https://github.com/liandu2024/AnGe-ClashBoard/compare/v1.84...v1.85) (2026-04-03)
 
 ### Bug Fixes

@@ -4,7 +4,7 @@
     :class="{ 'opacity-50': isDisabled }"
   >
     <div
-      class="flex flex-col gap-2 overflow-hidden p-2 text-sm"
+      class="app-card-padding flex flex-col gap-3 overflow-hidden text-sm"
       :class="{
         'cursor-pointer': isSelectable,
       }"

@@ -27,7 +27,6 @@ RUN TARGETARCH="${TARGETARCH}" TARGETVARIANT="${TARGETVARIANT}" node ./scripts/f
   && rm -rf ./scripts
 
 COPY --from=builder /build/dist ./dist
-COPY config ./config
 COPY --from=builder /runtime/server ./server
 
 ENV NODE_ENV=production

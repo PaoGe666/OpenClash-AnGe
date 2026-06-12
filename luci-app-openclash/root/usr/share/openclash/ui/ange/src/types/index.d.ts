@@ -7,6 +7,10 @@ export type Backend = {
   uuid: string
   label?: string
   disableUpgradeCore?: boolean
+  ruleSourcePlugin?: string
+  ruleSourceSshPort?: string
+  ruleSourceSshUsername?: string
+  ruleSourceSshPassword?: string
 }
 
 export type Config = {
