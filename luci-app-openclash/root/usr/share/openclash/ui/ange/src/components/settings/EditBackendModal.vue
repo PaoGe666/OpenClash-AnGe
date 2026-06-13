@@ -12,19 +12,12 @@
       >
         <div class="grid gap-3 sm:grid-cols-2">
           <div class="flex flex-col gap-1">
-            <label class="text-sm">{{ t('selectBackend') }}</label>
-            <select
-              class="select select-sm w-full"
-              v-model="selectedBackendUuid"
-            >
-              <option
-                v-for="backend in backendList"
-                :key="backend.uuid"
-                :value="backend.uuid"
-              >
-                {{ getLabelFromBackend(backend) }}
-              </option>
-            </select>
+            <label class="text-sm">{{ t('label') }}</label>
+            <TextInput
+              class="w-full"
+              v-model="editForm.label"
+              :placeholder="t('label')"
+            />
           </div>
 
           <div class="flex flex-col gap-1">
@@ -72,15 +65,6 @@
               type="password"
               class="input input-sm w-full"
               v-model="editForm.password"
-            />
-          </div>
-
-          <div class="flex flex-col gap-1">
-            <label class="text-sm">{{ t('label') }} ({{ t('optional') }})</label>
-            <TextInput
-              class="w-full"
-              v-model="editForm.label"
-              :placeholder="t('label')"
             />
           </div>
         </div>
@@ -177,7 +161,6 @@ import DialogWrapper from '@/components/common/DialogWrapper.vue'
 import TextInput from '@/components/common/TextInput.vue'
 import { showNotification } from '@/helper/notification'
 import { fetchServerApi } from '@/store/auth'
-import { getLabelFromBackend } from '@/helper/utils'
 import { activeBackend, backendList, updateBackend } from '@/store/setup'
 import type { Backend } from '@/types'
 import { computed, ref, watch } from 'vue'
@@ -204,13 +187,13 @@ const isVisible = computed({
 })
 
 const editForm = ref<Omit<Backend, 'uuid'> | null>(null)
-const selectedBackendUuid = ref<string>('')
+const editingBackendUuid = ref<string>('')
 const isSaving = ref(false)
 const isTestingRuleSourceSsh = ref(false)
 const ruleSourceSshStatus = ref('')
 
 const selectedBackend = computed(() => {
-  return backendList.value.find((b) => b.uuid === selectedBackendUuid.value) || null
+  return backendList.value.find((b) => b.uuid === editingBackendUuid.value) || null
 })
 
 watch(
@@ -218,9 +201,9 @@ watch(
   (isOpen) => {
     if (isOpen) {
       if (props.defaultBackendUuid) {
-        selectedBackendUuid.value = props.defaultBackendUuid
+        editingBackendUuid.value = props.defaultBackendUuid
       } else if (activeBackend.value) {
-        selectedBackendUuid.value = activeBackend.value.uuid
+        editingBackendUuid.value = activeBackend.value.uuid
       }
     }
   },
@@ -252,7 +235,7 @@ watch(
 const handleCancel = () => {
   isVisible.value = false
   editForm.value = null
-  selectedBackendUuid.value = ''
+  editingBackendUuid.value = ''
   ruleSourceSshStatus.value = ''
 }
 
@@ -292,11 +275,10 @@ const detectRuleSourceSsh = async () => {
       throw new Error(data?.message || t('detectRuleSourceFailed', { status: response.status }))
     }
 
-    const availablePlugins =
-      data?.availablePlugins?.length
-        ? t('ruleSourceDetectedAvailable', {
-            plugins: data.availablePlugins.join(' / '),
-          })
+    const availablePlugins = data?.availablePlugins?.length
+      ? t('ruleSourceDetectedAvailable', {
+          plugins: data.availablePlugins.join(' / '),
+        })
       : ''
     ruleSourceSshStatus.value = t('ruleSourceDetected', {
       plugin: data?.plugin || '-',
@@ -351,7 +333,7 @@ const handleSave = async () => {
 
     isVisible.value = false
     editForm.value = null
-    selectedBackendUuid.value = ''
+    editingBackendUuid.value = ''
     ruleSourceSshStatus.value = ''
     emit('saved')
   } catch (error) {

@@ -268,6 +268,7 @@ const zhTW: LANG_MESSAGE = {
   detectRuleSource: '檢測規則源',
   detectRuleSourceFailed: '檢測規則源失敗: {status}',
   ruleSourceDetected: '已檢測到 {plugin}：{path}，規則源 {count} 個{availablePlugins}',
+  ruleSourceDetectedShort: '已檢測 {plugin}，{count} 個{availablePlugins}',
   ruleSourceDetectedAvailable: '，可用 {plugins}',
   ruleSourceSyncSshRequired:
     '規則源同步需要先配置 SSH 帳號和密碼，並確保規則源檢測通過。請在「設定 - 後端 - 修改後端配置」的「規則源 SSH」中填寫 SSH 帳號、SSH 密碼，選擇正確的 OpenClash/Nikki 後點擊「檢測規則源」。',

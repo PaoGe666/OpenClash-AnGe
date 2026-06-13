@@ -278,6 +278,7 @@ const ru: LANG_MESSAGE = {
   detectRuleSourceFailed: 'Не удалось проверить источник правил: {status}',
   ruleSourceDetected:
     'Обнаружено {plugin}: {path}, источников правил: {count}{availablePlugins}',
+  ruleSourceDetectedShort: 'Обнаружено {plugin}, источников: {count}{availablePlugins}',
   ruleSourceDetectedAvailable: ', доступно {plugins}',
   ruleSourceSyncSshRequired:
     'Для синхронизации источников правил сначала укажите SSH-аккаунт и пароль, а затем убедитесь, что проверка источника правил проходит успешно. Откройте «Настройки - Бэкенд - Редактировать конфигурацию бэкенда» > «SSH источников правил», введите SSH-аккаунт и SSH-пароль, выберите правильный OpenClash/Nikki и нажмите «Проверить источник правил».',

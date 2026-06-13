@@ -273,6 +273,7 @@ const en = {
   detectRuleSourceFailed: 'Failed to detect rule source: {status}',
   ruleSourceDetected:
     'Detected {plugin}: {path}, {count} rule sources{availablePlugins}',
+  ruleSourceDetectedShort: 'Detected {plugin}, {count} sources{availablePlugins}',
   ruleSourceDetectedAvailable: ', available {plugins}',
   ruleSourceSyncSshRequired:
     'Rule source sync requires an SSH account and password first, and rule source detection must pass. Go to "Settings - Backend - Edit backend configuration" > "Rule Source SSH", enter the SSH account and SSH password, choose the correct OpenClash/Nikki, then click "Detect rule source".',
