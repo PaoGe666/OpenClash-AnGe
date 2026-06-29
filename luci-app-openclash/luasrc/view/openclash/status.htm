@@ -1,5 +1,12 @@
+<%
+    local fs = require "luci.openclash"
+    local plugin_version = fs.oc_version()
+    local uci = require("luci.model.uci").cursor()
+    local RELEASE_BRANCH = fs.uci_get_config("config", "release_branch")
+%>
 <html>
 <head>
+<<<<<<< HEAD
 <style>
 .oc {
     --bg-white: #ffffff;
@@ -1897,13 +1904,10 @@
     }
 }
 </style>
+=======
+<link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css?v=<%=plugin_version%>">
+>>>>>>> upstream/master
 </head>
-<%
-    local uci = require("luci.model.uci").cursor()
-    local fs = require "luci.openclash"
-    local RELEASE_BRANCH = fs.uci_get_config("config", "release_branch")
-    local random = tostring(os.time()):reverse():sub(1, 9)
-%>
 <fieldset class="cbi-section">
     <table width="100%">
     <tr>
@@ -1912,10 +1916,11 @@
                 <div class="main-cards-container">
                     <div class="announcement-card">
                         <div id="announcement-banner" class="announcement-banner">
-                            <div class="megaphone-container"></div>
-                            <svg id="megaphone" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 256 256">
-                                <path d="M228.54,86.66l-176.06-54A16,16,0,0,0,32,48V192a16,16,0,0,0,16,16,16,16,0,0,0,4.52-.65L136,181.73V192a16,16,0,0,0,16,16h32a16,16,0,0,0,16-16v-29.9l28.54-8.75A16.09,16.09,0,0,0,240,138V102A16.09,16.09,0,0,0,228.54,86.66ZM136,165,48,192V48l88,27Zm48,27H152V176.82L184,167Zm40-54-.11,0L152,160.08V79.92l71.89,22,.11,0v36Z"></path>
-                            </svg>
+                            <div class="megaphone-container">
+                                <svg id="megaphone" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 256 256">
+                                    <path d="M228.54,86.66l-176.06-54A16,16,0,0,0,32,48V192a16,16,0,0,0,16,16,16,16,0,0,0,4.52-.65L136,181.73V192a16,16,0,0,0,16,16h32a16,16,0,0,0,16-16v-29.9l28.54-8.75A16.09,16.09,0,0,0,240,138V102A16.09,16.09,0,0,0,228.54,86.66ZM136,165,48,192V48l88,27Zm48,27H152V176.82L184,167Zm40-54-.11,0L152,160.08V79.92l71.89,22,.11,0v36Z"></path>
+                                </svg>
+                            </div>
                             <div id="announcement-content" class="announcement-content"></div>
                         </div>
                     </div>
@@ -1987,7 +1992,7 @@
                                     <button type="button" class="icon-btn action-btn" id="go_telegram" title="<%:Telegram%>" onclick="return telegrampage()"><svg width="14" height="14" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="20"><path d="M80,134.87,170.26,214a8,8,0,0,0,13.09-4.21L224,33.22a1,1,0,0,0-1.34-1.15L20,111.38A6.23,6.23,0,0,0,21,123.3Z" stroke-linecap="round" stroke-linejoin="round"/><line x1="80" y1="134.87" x2="223.41" y2="32.09" stroke-linecap="round" stroke-linejoin="round"/><path d="M124.37,173.78,93.76,205.54A8,8,0,0,1,80,200V134.87" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                                     <button type="button" class="icon-btn action-btn" id="go_sponsor" title="<%:Sponsor%>" onclick="return sponsorpage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
                                     <button type="button" class="icon-btn action-btn" id="logo_btn" title="Mihomo" onclick="return go_mihomo();">
-                                        <img id="_logo" src="/luci-static/resources/openclash/img/logo.png?<%=random%>" loading="lazy" width="14px" height="14px" alt="Mihomo"/>
+                                        <img id="_logo" src="/luci-static/resources/openclash/img/logo.png?v=<%=plugin_version%>" loading="lazy" width="14px" height="14px" alt="Mihomo"/>
                                         <span class="logo-text">Powered by <span class="mihomo-link">Mihomo</span></span>
                                     </button>
                                 </div>
@@ -2082,7 +2087,10 @@
                                         <div class="subscription-nav-arrow right" id="subscription-next-arrow" onclick="switchToNextConfig()" title="<%:Next%>"></div>
                                         <div class="subscription-info-main">
                                             <div class="subscription-info-header">
-                                                <div class="config-file-name" id="current-config-name"><%:No Config Selected%></div>
+                                                <div class="config-file-name-wrapper">
+                                                    <div class="config-file-name" id="current-config-name"><%:No Config Selected%></div>
+                                                    <span id="age-file-icon" class="age-file-icon" style="display:none;"></span>
+                                                </div>
                                                 <div class="file-info" id="file-info-section">
                                                     <span id="file-modify-time" class="file-info-item"><%:Modified: %> --</span>
                                                 </div>
@@ -2233,12 +2241,49 @@
                         </div>
                     </div>
                 </div>
+
+            <!-- Usage Help Model -->
+            <div class="config-upload-model-overlay" id="usage-help-overlay" style="display: none;">
+                <div class="config-upload-model" id="usage-help-model">
+                    <div class="config-upload-header">
+                        <div class="config-upload-title"><%:Usage Help%></div>
+                        <button type="button" class="icon-btn" onclick="UsageHelpManager.hide()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                    <div class="config-upload-content">
+                        <div class="form-group">
+                            <label class="highlight-label"><%:Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:%></label>
+                            <textarea id="usage-help-textarea" class="form-textarea" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="config-upload-footer">
+                        <div class="config-upload-status" id="usage-help-status"></div>
+                        <div class="config-upload-buttons">
+                            <button type="button" class="btn cancel-btn" onclick="UsageHelpManager.hide()"><%:Cancel%></button>
+                            <button type="button" class="btn upload-btn" onclick="UsageHelpManager.copyAndHide()"><%:Copy And Close%></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
         </td>
     </tr>
 </table>
 </fieldset>
 
+<!-- Usage Help Button -->
+<div class="oc-usage-help-float" id="usage-help-float" title="<%:Usage Help%>" onclick="UsageHelpManager.show()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="7" width="18" height="13" rx="2"/>
+        <circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>
+        <line x1="9" y1="17" x2="15" y2="17"/>
+        <path d="M12 3v4"/>
+        <circle cx="12" cy="3" r="1"/>
+    </svg>
+</div>
+
+<script src="/luci-static/resources/openclash/js/common.js"></script>
 <script type="text/javascript">//<![CDATA[
     var DOMCache = {
         clash: document.getElementById('_clash'),
@@ -2759,7 +2804,8 @@
                                 if (typeof file === 'object' && file.mtime && file.size) {
                                     currentFileInfo = {
                                         mtime: file.mtime,
-                                        size: file.size
+                                        size: file.size,
+                                        age: file.age
                                     };
                                 }
                                 break;
@@ -2904,6 +2950,8 @@
             var configNameElement = document.getElementById('current-config-name');
             var fileModifyTimeElement = document.getElementById('file-modify-time');
             var detailsSection = document.getElementById('subscription-info-details');
+            var configFileContent = document.querySelector('.config-file-content');
+            var ageFileIconElement = document.getElementById('age-file-icon');
 
             if (!container) return;
 
@@ -2917,7 +2965,6 @@
                 return;
             }
 
-            var configFileContent = document.querySelector('.config-file-content');
             if (configFileContent && configFileContent.classList.contains('empty-state')) {
                 container.style.display = 'none';
                 return;
@@ -2954,6 +3001,17 @@
                 if (detailsSection) {
                     detailsSection.style.display = 'flex';
                 }
+
+                if (ageFileIconElement) {
+                    if (fileInfo.age) {
+                        ageFileIconElement.innerHTML = '<svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9.25564L24.0086 4L42 9.25564V20.0337C42 31.3622 34.7502 41.4194 24.0026 45.0005C13.2521 41.4195 6 31.36 6 20.0287V9.25564Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M15 23L22 30L34 18" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                        ageFileIconElement.title = '<%:Age Encryption File%>';
+                        ageFileIconElement.style.display = 'inline-flex';
+                    } else {
+                        ageFileIconElement.innerHTML = '';
+                        ageFileIconElement.style.display = 'none';
+                    }
+                }
             } else {
                 if (fileModifyTimeElement) {
                     fileModifyTimeElement.textContent = '<%:Update Time%> --';
@@ -2961,6 +3019,11 @@
 
                 if (detailsSection) {
                     detailsSection.style.display = 'none';
+                }
+
+                if (ageFileIconElement) {
+                    ageFileIconElement.innerHTML = '';
+                    ageFileIconElement.style.display = 'none';
                 }
             }
         },
@@ -3062,12 +3125,12 @@
             for (var i = 0; i < this.configList.length; i++) {
                 var file = this.configList[i];
                 var filePath = typeof file === 'string' ? file : (file.path || file.filepath || file);
-
                 if (filePath === selectedValue) {
                     if (typeof file === 'object' && file.mtime && file.size) {
                         selectedFileInfo = {
                             mtime: file.mtime,
-                            size: file.size
+                            size: file.size,
+                            age: file.age
                         };
                     }
                     break;
@@ -3111,7 +3174,6 @@
 
             var file = this.configList[index];
             var filePath = typeof file === 'string' ? file : (file.path || file.filepath || file);
-
             if (this.selectElement) {
                 this.selectElement.value = filePath;
             }
@@ -4629,6 +4691,199 @@
         }
     };
 
+    var AnnouncementDataManager = (function() {
+        var defaultTips = [
+            '<%:You can modify the profile on the profile page (for content that is not taken over)%>',
+            '<%:do not write configuration files? Try to create one click on the server page%>',
+            '<%:some website are abnormal? Try switching modes or using third-party rules%>',
+            '<%:using the fake IP mode can get a faster access experience%>',
+            '<%:the nameserver group must have at least one server set when using custom DNS%>',
+            '<%:after started, please wait patiently until the connection is normal%>',
+            '<%:if you don not use IPv6, please turn off the DHCP service of IPv6, otherwise the connection will be abnormal%>',
+            '<%:you can update the version in the settings page%>',
+            '<%:Note: It is not recommended to enable IPv6 and related services for routing. Most of the network connection problems reported so far are related to it%>',
+            '<%:Note: Turning on secure DNS in the browser will cause abnormal shunting, please be careful to turn it off%>',
+            '<%:Note: Some software will modify the device HOSTS, which will cause abnormal shunt, please pay attention to check%>',
+            '<%:Note: The default proxy routes local traffic, BT, PT download, etc., please use Redir-Host mode as much as possible and pay attention to traffic avoidance%>'
+        ];
+
+        function getRandomTips(count, sourceArray) {
+            var source = sourceArray || defaultTips;
+            var shuffled = source.slice();
+            for (var i = shuffled.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = shuffled[i];
+                shuffled[i] = shuffled[j];
+                shuffled[j] = temp;
+            }
+            return shuffled.slice(0, count);
+        }
+
+        function extractAnnouncements(remoteData, isChineseUser) {
+            var announcements = [];
+            if (!remoteData) return announcements;
+
+            if (Array.isArray(remoteData)) {
+                if (remoteData.length > 0 && (remoteData[0].zh || remoteData[0].en)) {
+                    remoteData.forEach(function(item) {
+                        if (isChineseUser && item.zh) {
+                            announcements.push(item.zh);
+                        } else if (item.en) {
+                            announcements.push(item.en);
+                        } else if (item.zh) {
+                            announcements.push(item.zh);
+                        }
+                    });
+                } else {
+                    announcements = remoteData.filter(function(item) {
+                        return typeof item === 'string' && item.trim() !== '';
+                    });
+                }
+            } else if (typeof remoteData === 'string' && remoteData.trim() !== '') {
+                announcements = [remoteData];
+            }
+            return announcements;
+        }
+
+        function prepareData(remoteData, isChineseUser, randomCount) {
+            var announcements = extractAnnouncements(remoteData, isChineseUser);
+            var isRandomTips = false;
+            if (announcements.length === 0) {
+                announcements = getRandomTips(randomCount || 3);
+                isRandomTips = true;
+            }
+            return { announcements: announcements, isRandomTips: isRandomTips };
+        }
+
+        function updateIconShape(megaphoneSvgElement, isRandomTips) {
+            if (!megaphoneSvgElement) return;
+            if (isRandomTips) {
+                megaphoneSvgElement.innerHTML = '<path d="M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.49C39.74,56.83,78.26,17.14,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.65,71.65,0,0,0,27.64,56.3A32,32,0,0,1,96,186v6h64v-6a32.15,32.15,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Zm-16.11-9.34a57.6,57.6,0,0,0-46.56-46.55,8,8,0,0,0-2.66,15.78c16.57,2.79,30.63,16.85,33.44,33.45A8,8,0,0,0,176,104a9,9,0,0,0,1.35-.11A8,8,0,0,0,183.89,94.66Z" stroke-width="2"></path>';
+                megaphoneSvgElement.setAttribute('viewBox', '0 0 256 256');
+                megaphoneSvgElement.setAttribute('stroke-width', '3');
+            } else {
+                megaphoneSvgElement.innerHTML = '<path d="M228.54,86.66l-176.06-54A16,16,0,0,0,32,48V192a16,16,0,0,0,16,16,16,16,0,0,0,4.52-.65L136,181.73V192a16,16,0,0,0,16,16h32a16,16,0,0,0,16-16v-29.9l28.54-8.75A16.09,16.09,0,0,0,240,138V102A16.09,16.09,0,0,0,228.54,86.66ZM136,165,48,192V48l88,27Zm48,27H152V176.82L184,167Zm40-54-.11,0L152,160.08V79.92l71.89,22,.11,0v36Z"></path>';
+                megaphoneSvgElement.setAttribute('viewBox', '0 0 256 256');
+                megaphoneSvgElement.removeAttribute('stroke-width');
+            }
+        }
+
+        return {
+            getRandomTips: getRandomTips,
+            extractAnnouncements: extractAnnouncements,
+            prepareData: prepareData,
+            updateIconShape: updateIconShape
+        };
+    })();
+
+    var UsageHelpManager = {
+        overlay: null,
+        textarea: null,
+        statusEl: null,
+        initialized: false,
+
+        init: function() {
+            if (this.initialized) return;
+            this.overlay = document.getElementById('usage-help-overlay');
+            this.textarea = document.getElementById('usage-help-textarea');
+            this.statusEl = document.getElementById('usage-help-status');
+
+            var floatBtn = document.getElementById('usage-help-float');
+            if (floatBtn) {
+                floatBtn.addEventListener('click', function() { UsageHelpManager.show(); });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && UsageHelpManager.overlay && UsageHelpManager.overlay.style.display === 'flex') {
+                    UsageHelpManager.hide();
+                }
+            });
+
+            this.initialized = true;
+        },
+
+        buildPrompt: function() {
+            var skillUrl = 'https://raw.githubusercontent.com/vernesong/OpenClash/dev/.github/skills/openclash-user-guide/SKILL.md';
+            var prompt = '<%:You are an OpenClash expert assistant. OpenClash is a LuCI plugin for OpenWrt that manages the Mihomo core.%>\n\n';
+            prompt += '<%:IMPORTANT — Before answering, you MUST fetch and read this authoritative reference guide. This is your primary knowledge source for all OpenClash questions:%>\n';
+            prompt += skillUrl + '\n\n';
+            prompt += '<%:This guide contains: complete dependency checklist, error message lookup tables with exact fixes, nftables/iptables firewall chain rules, all LuCI configuration options with UCI paths, DNS setup and leak prevention, subscription/GEO update procedures, and more.%>\n\n';
+            prompt += '<%:When answering my question about OpenClash, follow these rules:%>\n';
+            prompt += '1. <%:Always provide LuCI web UI navigation paths (e.g. Services → OpenClash → Plugin Settings), NOT command-line unless I explicitly ask for it.%>\n';
+            prompt += '2. <%:Explain underlying principles (firewall chains, YAML transformation logic) — not just click-here-click-there steps.%>\n';
+            prompt += '3. <%:Check dependency integrity first when troubleshooting — guide me to check dependencies from the System → Software page, or generate a debug log from Plugin Settings → Debug Log page.%>\n';
+            prompt += '4. <%:Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order): Mihomo Wiki%> (https://wiki.metacubex.one/config/) , <%:Meta-Docs%> (https://github.com/MetaCubeX/Meta-Docs) , <%:OpenClash source%> (https://github.com/vernesong/OpenClash/tree/dev) , <%:Mihomo core source%> (https://github.com/MetaCubeX/mihomo/tree/Alpha) , <%:Smart core source%> (https://github.com/vernesong/mihomo/tree/Alpha) . <%:Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source.%>\n';
+            prompt += '5. <%:For bug reports or failure scenarios not covered by the guide, search GitHub Issues first — OpenClash Issues%> (https://github.com/vernesong/OpenClash/issues) <%:for plugin-side problems (config/subscribe/firewall/UI), Mihomo Issues%> (https://github.com/MetaCubeX/mihomo/issues) <%:for core-side problems (proxy protocols/TUN/DNS/rule engine). Prioritize maintainer replies and highly upvoted community answers.%>\n';
+            prompt += '6. <%:Cite specific sources — mention which section of the reference guide, external resource, or Issue number your answer is based on.%>\n';
+            prompt += '7. <%:If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (Plugin Settings → Debug Log → Generate) — do NOT speculate about the cause.%>\n\n';
+            prompt += '<%:My question is:%>\n';
+            return prompt;
+        },
+
+        show: function() {
+            this.init();
+            if (!this.overlay || !this.textarea) return;
+            if (!this._portal) {
+                this._portal = document.createElement('div');
+                this._portal.className = 'oc';
+                this._portal.style.overflow = 'visible';
+                document.body.appendChild(this._portal);
+                this._portal.appendChild(this.overlay);
+            }
+            this.textarea.value = this.buildPrompt();
+            this.overlay.style.display = 'flex';
+            if (this.statusEl) {
+                this.statusEl.textContent = '';
+            }
+            setTimeout(function() {
+                if (UsageHelpManager.textarea) {
+                    UsageHelpManager.textarea.focus();
+                }
+            }, 100);
+        },
+
+        hide: function() {
+            if (this.overlay) {
+                this.overlay.style.display = 'none';
+            }
+        },
+
+        copyText: function() {
+            if (!this.textarea) return;
+            this.textarea.select();
+            this.textarea.setSelectionRange(0, 99999);
+            try {
+                navigator.clipboard.writeText(this.textarea.value).then(function() {
+                    if (UsageHelpManager.statusEl) {
+                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
+                        setTimeout(function() {
+                            if (UsageHelpManager.statusEl) {
+                                UsageHelpManager.statusEl.textContent = '';
+                            }
+                        }, 2000);
+                    }
+                }).catch(function() {
+                    document.execCommand('copy');
+                    if (UsageHelpManager.statusEl) {
+                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
+                        setTimeout(function() {
+                            if (UsageHelpManager.statusEl) {
+                                UsageHelpManager.statusEl.textContent = '';
+                            }
+                        }, 2000);
+                    }
+                });
+            } catch(e) {
+                document.execCommand('copy');
+            }
+        },
+
+        copyAndHide: function() {
+            this.copyText();
+            this.hide();
+        }
+    };
+
     var script_radio, script_radio_label;
     var s, gr;
     var pluginToggleUserAction = false;
@@ -4838,208 +5093,246 @@
         return protocol + host + ":" + port;
     }
 
-    function loadAnnouncement() {
-        var userLang = navigator.language || navigator.userLanguage; 
-        var isChineseUser = userLang.indexOf('zh') === 0;
+    function AnnouncementAnimator(config) {
+        var bannerElement = config.bannerElement;
+        var contentElement = config.contentElement;
+        var announcements = config.announcements;
+        var isRandomTips = config.isRandomTips || false;
+        var randomTipCount = config.randomTipCount || 3;
+        var getRandomTipsCallback = config.getRandomTipsCallback;
+        var onIndexChange = config.onIndexChange || function(index, text) {};
+        var loopDelay = config.loopDelay || 2000; 
+        var animationRefreshThreshold = 250;
+        var currentIndex = 0;
+        var isHovered = false;
+        var pauseTimeout = null;
+        var nextAnimationTimeout = null;
+        var resizeTimeout = null;
+        var animationEndHandler = null;
+        var destroyed = false;
 
-        var tips = [
-            '<%:You can modify the profile on the profile page (for content that is not taken over)%>',
-            '<%:do not write configuration files? Try to create one click on the server page%>',
-            '<%:some website are abnormal? Try switching modes or using third-party rules%>',
-            '<%:using the fake IP mode can get a faster access experience%>',
-            '<%:the nameserver group must have at least one server set when using custom DNS%>',
-            '<%:after started, please wait patiently until the connection is normal%>',
-            '<%:if you don not use IPv6, please turn off the DHCP service of IPv6, otherwise the connection will be abnormal%>',
-            '<%:you can update the version in the settings page%>',
-            '<%:Note: It is not recommended to enable IPv6 and related services for routing. Most of the network connection problems reported so far are related to it%>',
-            '<%:Note: Turning on secure DNS in the browser will cause abnormal shunting, please be careful to turn it off%>',
-            '<%:Note: Some software will modify the device HOSTS, which will cause abnormal shunt, please pay attention to check%>',
-            '<%:Note: The default proxy routes local traffic, BT, PT download, etc., please use Redir-Host mode as much as possible and pay attention to traffic avoidance%>'
-        ];
-
-        function calculateAnimationDuration(bannerWidth, contentWidth) {
-            var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        function calculateAnimationDuration() {
+            var bannerWidth = bannerElement.offsetWidth;
+            var contentWidth = contentElement.offsetWidth;
             var refreshRate = window.screen && window.screen.refreshRate ? window.screen.refreshRate : 60;
             if (refreshRate <= 0) refreshRate = 60;
-
             if (refreshRate > 480) refreshRate = 480;
 
-            var baseDuration;
-            if (screenWidth <= 575) {
-                baseDuration = 12000;
-            } else if (screenWidth <= 768) {
-                baseDuration = 11000;
-            } else if (screenWidth <= 1200) {
-                baseDuration = 10000;
-            } else {
-                baseDuration = 9000;
-            }
+            var scrollDistance = contentWidth + bannerWidth;
+
+            var minDistance = 400;
+            var maxDistance = 20000;
+            var minSpeed = 60;
+            var maxSpeed = 360;
+            var clampedDistance = Math.min(maxDistance, Math.max(minDistance, scrollDistance));
+            var targetVelocity = minSpeed + (maxSpeed - minSpeed) * (clampedDistance - minDistance) / (maxDistance - minDistance);
+
+            var duration = (scrollDistance / targetVelocity) * 1000;
 
             var refreshRateMultiplier = 1;
             if (refreshRate > 60) {
                 refreshRateMultiplier = 1 + (refreshRate - 60) / 240;
             }
+            duration = duration * refreshRateMultiplier;
 
-            var duration = baseDuration * refreshRateMultiplier;
-
-            return Math.max(4000, Math.min(duration, 18000));
+            return Math.max(4000, Math.min(duration, 50000));
         }
 
-        function updateScrollAnimation(banner, content, duration) {
-            var bannerWidth = banner.offsetWidth;
-            var contentWidth = content.offsetWidth;
-            var scrollDistance = -(contentWidth + bannerWidth);
-
-            banner.style.setProperty('--scroll-distance', scrollDistance + 'px');
-
-            content.style.animationDuration = duration + 'ms';
+        function updateScrollAnimation(duration) {
+            var viewport = bannerElement.parentElement;
+            if (!viewport) viewport = bannerElement;
+            
+            var viewportWidth = viewport.clientWidth;
+            var contentWidth = contentElement.scrollWidth;
+            var scrollDistance = -(contentWidth + viewportWidth);
+            
+            viewport.style.setProperty('--scroll-distance', scrollDistance + 'px');
+            contentElement.style.animationDuration = duration + 'ms';
         }
 
-        function getRandomTips(count) {
-            var shuffled = tips.slice();
-            for (var i = shuffled.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = shuffled[i];
-                shuffled[i] = shuffled[j];
-                shuffled[j] = temp;
-            }
-            return shuffled.slice(0, count);
+        function refreshAnimation() {
+            if (!contentElement.classList.contains('scrolling')) return;
+            var duration = calculateAnimationDuration();
+            updateScrollAnimation(duration);
+            contentElement.classList.remove('scrolling');
+            contentElement.offsetHeight;
+            contentElement.classList.add('scrolling');
         }
 
-        function updateIcon(isRandomTips) {
-            var megaphoneElement = document.getElementById('megaphone');
-            if (!megaphoneElement) return;
-
-            if (isRandomTips) {
-                megaphoneElement.innerHTML = '<path d="M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.49C39.74,56.83,78.26,17.14,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.65,71.65,0,0,0,27.64,56.3A32,32,0,0,1,96,186v6h64v-6a32.15,32.15,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Zm-16.11-9.34a57.6,57.6,0,0,0-46.56-46.55,8,8,0,0,0-2.66,15.78c16.57,2.79,30.63,16.85,33.44,33.45A8,8,0,0,0,176,104a9,9,0,0,0,1.35-.11A8,8,0,0,0,183.89,94.66Z" stroke-width="2"></path>';
-                megaphoneElement.setAttribute('viewBox', '0 0 256 256');
-                megaphoneElement.setAttribute('stroke-width', '3');
+        function refreshAnnouncementsForRandomMode() {
+            if (!isRandomTips) return;
+            var newTips;
+            if (getRandomTipsCallback) {
+                newTips = getRandomTipsCallback(randomTipCount);
             } else {
-                megaphoneElement.innerHTML = '<path d="M228.54,86.66l-176.06-54A16,16,0,0,0,32,48V192a16,16,0,0,0,16,16,16,16,0,0,0,4.52-.65L136,181.73V192a16,16,0,0,0,16,16h32a16,16,0,0,0,16-16v-29.9l28.54-8.75A16.09,16.09,0,0,0,240,138V102A16.09,16.09,0,0,0,228.54,86.66ZM136,165,48,192V48l88,27Zm48,27H152V176.82L184,167Zm40-54-.11,0L152,160.08V79.92l71.89,22,.11,0v36Z"></path>';
-                megaphoneElement.setAttribute('viewBox', '0 0 256 256');
+                newTips = AnnouncementDataManager.getRandomTips(randomTipCount);
+            }
+            if (newTips && newTips.length) {
+                announcements = newTips;
             }
         }
 
-        StateManager.cachedXHRGet('<%=luci.dispatcher.build_url("admin", "services", "openclash", "announcement")%>', function(x, status) {
-            var banner = document.getElementById('announcement-banner');
-            var content = document.getElementById('announcement-content');
-            var announcements = [];
-            var isRandomTips = false;
-
-            if (!banner || !content) return;
-
-            if (x && x.status == 200 && status.content) {
-                try {
-                    var contentData = status.content;
-                    if (typeof contentData === 'string') {
-                        contentData = JSON.parse(contentData);
-                    }
-
-                    if (Array.isArray(contentData)) {
-                        if (contentData.length > 0 && (contentData[0].zh || contentData[0].en)) {
-                            contentData.forEach(function(item) {
-                                if (isChineseUser && item.zh) {
-                                    announcements.push(item.zh);
-                                } else if (item.en) {
-                                    announcements.push(item.en);
-                                } else if (item.zh) {
-                                    announcements.push(item.zh);
-                                }
-                            });
-                        } else {
-                            announcements = contentData.filter(function(item) {
-                                return typeof item === 'string' && item.trim() !== '';
-                            });
-                        }
-                    } else if (typeof contentData === 'string' && contentData.trim() !== '') {
-                        announcements = [contentData];
-                    }
-                } catch (e) {
-                    if (typeof status.content === 'string' && status.content.trim() !== '') {
-                        announcements = [status.content];
-                    }
-                }
+        function startSingleScroll() {
+            if (destroyed) return;
+            if (nextAnimationTimeout) {
+                clearTimeout(nextAnimationTimeout);
+                nextAnimationTimeout = null;
             }
 
-            if (announcements.length === 0) {
-                announcements = getRandomTips(3);
-                isRandomTips = true;
-            }
-
-            updateIcon(isRandomTips);
-            banner.style.display = 'block';
-
-            var currentIndex = 0;
-            var isHovered = false;
-            var pauseTimeout = null;
-            var nextAnimationTimeout = null;
-
-            banner.addEventListener('mouseenter', function() { 
-                isHovered = true;
-                content.classList.add('paused');
-            });
-            banner.addEventListener('mouseleave', function() { 
-                isHovered = false;
-                content.classList.remove('paused');
-            });
-
-            var resizeTimeout;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(function() {
-                    if (content.classList.contains('scrolling')) {
-                        var duration = calculateAnimationDuration(banner.offsetWidth, content.offsetWidth);
-                        updateScrollAnimation(banner, content, duration);
-                    }
-                }, 250);
-            });
-
-            function startScrollAnimation() {
-                if (nextAnimationTimeout) {
-                    clearTimeout(nextAnimationTimeout);
-                    nextAnimationTimeout = null;
-                }
-
-                content.textContent = announcements[currentIndex];
-
-                setTimeout(function() {
-                    var duration = calculateAnimationDuration(banner.offsetWidth, content.offsetWidth);
-                    updateScrollAnimation(banner, content, duration);
-
-                    content.classList.remove('scrolling');
-                    content.offsetHeight;
-                    content.classList.add('scrolling');
-
-                    var onAnimationEnd = function(e) {
-                        if (e.target === content && e.animationName === 'announceScroll') {
-                            content.removeEventListener('animationend', onAnimationEnd);
-
-                            pauseTimeout = setTimeout(function() {
-                                if (!isHovered) {
-                                    currentIndex = (currentIndex + 1) % announcements.length;
-
-                                    if (isRandomTips && currentIndex === 0) {
-                                        announcements = getRandomTips(3);
-                                    }
-
-                                    startScrollAnimation();
-                                }
-                            }, 2000);
-                        }
-                    };
-
-                    content.addEventListener('animationend', onAnimationEnd);
-
-                }, 50);
-            }
+            var text = announcements[currentIndex] || '';
+            contentElement.textContent = text;
+            if (onIndexChange) onIndexChange(currentIndex, text);
 
             setTimeout(function() {
-                startScrollAnimation();
-            }, 300);
+                if (destroyed) return;
+                var duration = calculateAnimationDuration();
+                updateScrollAnimation(duration);
 
-            window.addEventListener('beforeunload', function() {
+                if (animationEndHandler) {
+                    contentElement.removeEventListener('animationend', animationEndHandler);
+                }
+
+                animationEndHandler = function(e) {
+                    if (e.target === contentElement && e.animationName === 'announceScroll') {
+                        contentElement.removeEventListener('animationend', animationEndHandler);
+                        animationEndHandler = null;
+
+                        pauseTimeout = setTimeout(function() {
+                            if (destroyed) return;
+                            if (!isHovered) {
+                                currentIndex = (currentIndex + 1) % announcements.length;
+                                if (isRandomTips && currentIndex === 0) {
+                                    refreshAnnouncementsForRandomMode();
+                                }
+                                startSingleScroll();
+                            }
+                        }, loopDelay);
+                    }
+                };
+                contentElement.addEventListener('animationend', animationEndHandler);
+
+                contentElement.classList.remove('scrolling');
+                contentElement.offsetHeight;
+                contentElement.classList.add('scrolling');
+            }, 50);
+        }
+
+        function pause() {
+            if (destroyed) return;
+            isHovered = true;
+            contentElement.classList.add('paused');
+            if (pauseTimeout) {
+                clearTimeout(pauseTimeout);
+                pauseTimeout = null;
+            }
+        }
+
+        function resume() {
+            if (destroyed) return;
+            isHovered = false;
+            contentElement.classList.remove('paused');
+        }
+
+        function destroy() {
+            destroyed = true;
+            if (pauseTimeout) clearTimeout(pauseTimeout);
+            if (nextAnimationTimeout) clearTimeout(nextAnimationTimeout);
+            if (resizeTimeout) clearTimeout(resizeTimeout);
+            if (animationEndHandler) {
+                contentElement.removeEventListener('animationend', animationEndHandler);
+                animationEndHandler = null;
+            }
+            contentElement.classList.remove('scrolling', 'paused');
+            bannerElement.removeEventListener('mouseenter', mouseEnterHandler);
+            bannerElement.removeEventListener('mouseleave', mouseLeaveHandler);
+            window.removeEventListener('resize', resizeHandler);
+        }
+
+        function mouseEnterHandler() { pause(); }
+        function mouseLeaveHandler() { resume(); }
+        function resizeHandler() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                if (!destroyed && contentElement.classList.contains('scrolling')) {
+                    refreshAnimation();
+                }
+            }, animationRefreshThreshold);
+        }
+
+        function init() {
+            if (!bannerElement || !contentElement || !announcements || announcements.length === 0) {
+                console.warn('AnnouncementAnimator: invalid config');
+                return false;
+            }
+            bannerElement.style.display = 'block';
+            bannerElement.addEventListener('mouseenter', mouseEnterHandler);
+            bannerElement.addEventListener('mouseleave', mouseLeaveHandler);
+            window.addEventListener('resize', resizeHandler);
+            startSingleScroll();
+            return true;
+        }
+
+        return {
+            init: init,
+            pause: pause,
+            resume: resume,
+            destroy: destroy,
+            updateAnnouncements: function(newList, newRandomFlag) {
+                announcements = newList || announcements;
+                isRandomTips = (newRandomFlag !== undefined) ? newRandomFlag : isRandomTips;
+                currentIndex = 0;
                 if (pauseTimeout) clearTimeout(pauseTimeout);
                 if (nextAnimationTimeout) clearTimeout(nextAnimationTimeout);
+                if (animationEndHandler) {
+                    contentElement.removeEventListener('animationend', animationEndHandler);
+                    animationEndHandler = null;
+                }
+                contentElement.classList.remove('scrolling');
+                startSingleScroll();
+            }
+        };
+    }
+
+    function loadAnnouncement() {
+        var userLang = navigator.language || navigator.userLanguage;
+        var isChineseUser = (userLang.indexOf('zh') === 0);
+        var bannerElement = document.getElementById('announcement-banner');
+        var contentElement = document.getElementById('announcement-content');
+        var megaphoneSvg = document.getElementById('megaphone');
+
+        if (!bannerElement || !contentElement) return;
+
+        StateManager.cachedXHRGet('<%=luci.dispatcher.build_url("admin", "services", "openclash", "announcement")%>', function(x, status) {
+            var remoteData = null;
+            if (x && x.status == 200 && status.content) {
+                try {
+                    remoteData = typeof status.content === 'string' ? JSON.parse(status.content) : status.content;
+                } catch(e) {
+                    remoteData = status.content;
+                }
+            }
+
+            var prepared = AnnouncementDataManager.prepareData(remoteData, isChineseUser, 3);
+            if (megaphoneSvg) {
+                AnnouncementDataManager.updateIconShape(megaphoneSvg, prepared.isRandomTips);
+            }
+
+            var animator = new AnnouncementAnimator({
+                bannerElement: bannerElement,
+                contentElement: contentElement,
+                announcements: prepared.announcements,
+                isRandomTips: prepared.isRandomTips,
+                randomTipCount: 3,
+                getRandomTipsCallback: function(count) {
+                    return AnnouncementDataManager.getRandomTips(count);
+                },
+                loopDelay: 2000,
+            });
+
+            animator.init();
+
+            window.addEventListener('beforeunload', function() {
+                animator.destroy();
             });
         });
     }
@@ -6082,43 +6375,6 @@
         }
         return false;
     }
-
-    function isDarkBackground(element) {
-        var cachedTheme = localStorage.getItem('oc-theme');
-        if (cachedTheme === 'dark') {
-            return true;
-        } else if (cachedTheme === 'light') {
-            return false;
-        }
-
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return true;
-        }
-
-        var style = window.getComputedStyle(element);
-        var bgColor = style.backgroundColor;
-        let r, g, b;
-        if (/rgb\(/.test(bgColor)) {
-            var rgb = bgColor.match(/\d+/g);
-            r = parseInt(rgb[0]);
-            g = parseInt(rgb[1]);
-            b = parseInt(rgb[2]);
-        } else if (/#/.test(bgColor)) {
-            if (bgColor.length === 4) {
-                r = parseInt(bgColor[1] + bgColor[1], 16);
-                g = parseInt(bgColor[2] + bgColor[2], 16);
-                b = parseInt(bgColor[3] + bgColor[3], 16);
-            } else {
-                r = parseInt(bgColor.slice(1, 3), 16);
-                g = parseInt(bgColor.slice(3, 5), 16);
-                b = parseInt(bgColor.slice(5, 7), 16);
-            }
-        } else {
-            return false;
-        }
-        var luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        return luminance < 128;
-    };
 
     function toggleThemeMode() {
         var themes = ['light', 'dark', 'auto'];

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <style>
 @font-face {
     font-family: 'Twemoji Mozilla';
@@ -670,6 +671,8 @@
 }
 </style>
 
+=======
+>>>>>>> upstream/master
 <div class="oc">
     <div class="config-editor-model-overlay" id="config-editor-overlay">
         <div class="config-editor-model" id="config-editor-model">
@@ -764,37 +767,6 @@
         </div>
     </div>
 </div>
-
-<link rel="stylesheet" href="/luci-static/resources/openclash/lib/codemirror.css"/>
-<link rel="stylesheet" href="/luci-static/resources/openclash/theme/material.css"/>
-<link rel="stylesheet" href="/luci-static/resources/openclash/addon/fold/foldgutter.css"/>
-<link rel="stylesheet" href="/luci-static/resources/openclash/addon/lint/lint.css">
-<link rel="stylesheet" href="/luci-static/resources/openclash/addon/display/fullscreen.css">
-<link rel="stylesheet" href="/luci-static/resources/openclash/addon/dialog/dialog.css">
-<link rel="stylesheet" href="/luci-static/resources/openclash/addon/search/matchesonscrollbar.css">
-<script src="/luci-static/resources/openclash/lib/codemirror.js"></script>
-<script src="/luci-static/resources/openclash/mode/yaml/yaml.js"></script>
-<script src="/luci-static/resources/openclash/mode/shell/shell.js"></script>
-<script src="/luci-static/resources/openclash/mode/properties/properties.js"></script>
-<script src="/luci-static/resources/openclash/addon/fold/foldcode.js"></script>
-<script src="/luci-static/resources/openclash/addon/fold/foldgutter.js"></script>
-<script src="/luci-static/resources/openclash/addon/fold/indent-fold.js"></script>
-<script src="/luci-static/resources/openclash/addon/edit/matchbrackets.js"></script>
-<script src="/luci-static/resources/openclash/addon/selection/active-line.js"></script>
-<script src="/luci-static/resources/openclash/addon/lint/lint.js"></script>
-<script src="/luci-static/resources/openclash/addon/lint/yaml-lint.js"></script>
-<script src="/luci-static/resources/openclash/addon/lint/js-yaml.min.js"></script>
-<script src="/luci-static/resources/openclash/addon/display/fullscreen.js"></script>
-<script src="/luci-static/resources/openclash/addon/display/autorefresh.js"></script>
-<script src="/luci-static/resources/openclash/addon/dialog/dialog.js"></script>
-<script src="/luci-static/resources/openclash/addon/search/searchcursor.js"></script>
-<script src="/luci-static/resources/openclash/addon/search/search.js"></script>
-<script src="/luci-static/resources/openclash/addon/scroll/annotatescrollbar.js"></script>
-<script src="/luci-static/resources/openclash/addon/search/matchesonscrollbar.js"></script>
-<script src="/luci-static/resources/openclash/addon/search/jump-to-line.js"></script>
-<script src="/luci-static/resources/openclash/addon/merge/diff_match_patch.js"></script>
-<script src="/luci-static/resources/openclash/addon/merge/merge.js"></script>
-<link rel="stylesheet" href="/luci-static/resources/openclash/addon/merge/merge.css">
 
 <script type="text/javascript">
 var levelTranslations = {
@@ -940,7 +912,89 @@ var ConfigEditor = {
         this.makeResizable();
     },
 
+    _codeMirrorLoaded: false,
+    _codeMirrorLoading: null,
+
+    _loadCodeMirror: function(callback) {
+        if (this._codeMirrorLoaded) {
+            if (callback) callback();
+            return;
+        }
+        if (this._codeMirrorLoading) {
+            if (callback) this._codeMirrorLoading.then(callback);
+            return this._codeMirrorLoading;
+        }
+        var self = this;
+        var basePath = '/luci-static/resources/openclash';
+        var head = document.head || document.getElementsByTagName('head')[0];
+        var cssFiles = [
+            'lib/codemirror.css',
+            'theme/material.css',
+            'addon/fold/foldgutter.css',
+            'addon/lint/lint.css',
+            'addon/display/fullscreen.css',
+            'addon/dialog/dialog.css',
+            'addon/search/matchesonscrollbar.css',
+            'addon/merge/merge.css'
+        ];
+        var jsFiles = [
+            'lib/codemirror.js',
+            'mode/yaml/yaml.js',
+            'mode/shell/shell.js',
+            'mode/properties/properties.js',
+            'addon/fold/foldcode.js',
+            'addon/fold/foldgutter.js',
+            'addon/fold/indent-fold.js',
+            'addon/edit/matchbrackets.js',
+            'addon/selection/active-line.js',
+            'addon/lint/lint.js',
+            'addon/lint/yaml-lint.js',
+            'addon/lint/js-yaml.min.js',
+            'addon/display/fullscreen.js',
+            'addon/display/autorefresh.js',
+            'addon/dialog/dialog.js',
+            'addon/search/searchcursor.js',
+            'addon/search/search.js',
+            'addon/scroll/annotatescrollbar.js',
+            'addon/search/matchesonscrollbar.js',
+            'addon/search/jump-to-line.js',
+            'addon/merge/diff_match_patch.js',
+            'addon/merge/merge.js'
+        ];
+        var promises = [];
+        cssFiles.forEach(function(file) {
+            promises.push(new Promise(function(resolve) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = basePath + '/' + file;
+                link.onload = resolve;
+                link.onerror = resolve;
+                if (head) head.appendChild(link);
+                else resolve();
+            }));
+        });
+        var loadJS = function(index) {
+            if (index >= jsFiles.length) return Promise.resolve();
+            return new Promise(function(resolve) {
+                var script = document.createElement('script');
+                script.src = basePath + '/' + jsFiles[index];
+                script.onload = function() { loadJS(index + 1).then(resolve); };
+                script.onerror = function() { loadJS(index + 1).then(resolve); };
+                if (head) head.appendChild(script);
+                else resolve();
+            });
+        };
+        promises.push(loadJS(0));
+        this._codeMirrorLoading = Promise.all(promises).then(function() {
+            self._codeMirrorLoaded = true;
+            self._codeMirrorLoading = null;
+        });
+        if (callback) this._codeMirrorLoading.then(callback);
+        return this._codeMirrorLoading;
+    },
+
     show: function(configFile) {
+        var self = this;
         this.isOverwrite = false;
         this.currentViewMode = 'original';
         this.currentConfigFile = '';
@@ -995,10 +1049,13 @@ var ConfigEditor = {
 
         this.hideMergeView();
         this.updateModeTabs();
-        this.loadConfigContent();
+        this._loadCodeMirror(function() {
+            self.loadConfigContent();
+        });
     },
 
     showOverwrite: function() {
+        var self = this;
         this.isOverwrite = true;
         this.currentViewMode = 'original';
         this.originalContent = '';
@@ -1051,7 +1108,9 @@ var ConfigEditor = {
         }
 
         this.hideMergeView();
-        this.loadConfigContent();
+        this._loadCodeMirror(function() {
+            self.loadConfigContent();
+        });
     },
 
     hide: function() {
@@ -1237,14 +1296,12 @@ var ConfigEditor = {
         }
 
         fetch(url)
-            .then(function(response) {
-                if (!response.ok) {
-                    throw new Error('HTTP error! status: ' + response.status);
-                }
-                return response.json();
+            .then(function(r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.json();
             })
             .then(function(data) {
-                if (data.content !== undefined) {
+                if (data.status === 'success' && data.content !== undefined) {
                     if (self.currentViewMode === 'runtime' && !self.isOverwrite) {
                         self.runtimeContent = data.content;
                         renderEditor(self.runtimeContent, "text/yaml", true, false);
@@ -1256,10 +1313,11 @@ var ConfigEditor = {
                     }
                     self.updateModeTabs();
                 } else {
-                    throw new Error('Invalid response data');
+                    loadingDiv.querySelector('span').textContent = '<%:Failed to load config file%>';
+                    statusText.textContent = '<%:Load failed%>';
                 }
             })
-            .catch(function(error) {
+            .catch(function(err) {
                 loadingDiv.querySelector('span').textContent = '<%:Failed to load config file%>';
                 statusText.textContent = '<%:Load failed%>';
             });
@@ -1432,11 +1490,9 @@ var ConfigEditor = {
             method: 'POST',
             body: formData
         })
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error('HTTP error! status: ' + response.status);
-            }
-            return response.json();
+        .then(function(r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
         })
         .then(function(data) {
             saveBtn.disabled = false;
@@ -1463,16 +1519,10 @@ var ConfigEditor = {
                 }, 3000);
             }
         })
-        .catch(function(error) {
+        .catch(function(err) {
             saveBtn.disabled = false;
             statusText.textContent = '<%:Save failed%>';
-            alert('<%:Save config failed:%> ' + error.message);
-
-            setTimeout(function() {
-                if (statusText && statusText.textContent === '<%:Save failed%>') {
-                    statusText.textContent = '<%:Ready%>';
-                }
-            }, 3000);
+            alert('<%:Failed to save config file:%> ' + err.message);
         });
     },
 
