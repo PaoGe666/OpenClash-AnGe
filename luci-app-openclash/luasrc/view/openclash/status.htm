@@ -2283,7 +2283,7 @@
     </svg>
 </div>
 
-<script src="/luci-static/resources/openclash/js/common.js"></script>
+<script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
 <script type="text/javascript">//<![CDATA[
     var DOMCache = {
         clash: document.getElementById('_clash'),
@@ -3785,6 +3785,7 @@
         }
     };
 
+<<<<<<< HEAD
     var SubscriptionUrlSetter = {
         filename: '',
 
@@ -3902,6 +3903,8 @@
 
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
     var OverwriteSubscribeManager = {
         container: null,
         data: null,
@@ -5650,7 +5653,7 @@
     }
 
     function wikipage() {
-        url5 = 'https://github.com/vernesong/OpenClash/wiki';
+        url5 = 'https://github.com/vernesong/OpenClash/blob/dev/.github/skills/openclash-user-guide/SKILL.md';
         winOpen(url5);
     }
 
@@ -6260,17 +6263,17 @@
             return false;
         }
 
-        SubscriptionUrlSetter.show(filename);
+        SubscriptionUrlSetter.show(filename, "refreshSubscriptionInfo()");
         return false;
     }
 
     function uploadConfig() {
         if (typeof ConfigUploader !== 'undefined' && ConfigUploader.show) {
-            ConfigUploader.show();
+            ConfigUploader.show("ConfigFileManager.refreshConfigList()");
         } else {
             setTimeout(function() {
                 if (typeof ConfigUploader !== 'undefined' && ConfigUploader.show) {
-                    ConfigUploader.show();
+                    ConfigUploader.show("ConfigFileManager.refreshConfigList()");
                 } else {
                     alert('<%:Config editor not ready, please try again%>');
                 }
@@ -6298,11 +6301,11 @@
         }, function(x, status) {
             if (x.status == 200) {
                 if (ConfigUploader && ConfigUploader.showEditSubscribe) {
-                    ConfigUploader.showEditSubscribe(status, filename);
+                    ConfigUploader.showEditSubscribe(status, filename, "ConfigFileManager.refreshConfigList()");
                 } else {
                     setTimeout(function() {
                         if (ConfigUploader && ConfigUploader.showEditSubscribe) {
-                            ConfigUploader.showEditSubscribe(status, filename);
+                            ConfigUploader.showEditSubscribe(status, filename, "ConfigFileManager.refreshConfigList()");
                         } else {
                             alert('<%:Config editor not ready, please try again%>');
                         }

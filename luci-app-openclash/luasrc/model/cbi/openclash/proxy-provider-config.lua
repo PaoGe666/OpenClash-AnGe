@@ -32,17 +32,6 @@ font_off = [[</b>]]
 bold_on = [[<strong>]]
 bold_off = [[</strong>]]
 
-function IsYamlFile(e)
-	e=e or""
-	local e=string.lower(string.sub(e,-5,-1))
-	return e == ".yaml"
-end
-function IsYmlFile(e)
-	e=e or""
-	local e=string.lower(string.sub(e,-4,-1))
-	return e == ".yml"
-end
-
 m = Map(openclash, translate("Edit Proxy-Provider"))
 m.pageaction = false
 <<<<<<< HEAD
@@ -70,7 +59,7 @@ for t,f in ipairs(fs.glob("/etc/openclash/config/*"))do
 	if a then
 		e[t]={}
 		e[t].name=fs.basename(f)
-		if IsYamlFile(e[t].name) or IsYmlFile(e[t].name) then
+		if fs.IsYamlExt(e[t].name) then
 			o:value(e[t].name)
 		end
 	end
@@ -95,7 +84,7 @@ for t,f in ipairs(fs.glob("/etc/openclash/proxy_provider/*"))do
 	if h then
 		p[t]={}
 		p[t].name=fs.basename(f)
-		if IsYamlFile(p[t].name) or IsYmlFile(p[t].name) then
+		if fs.IsYamlExt(p[t].name) then
 			o:value("./proxy_provider/"..p[t].name)
 		end
 	end

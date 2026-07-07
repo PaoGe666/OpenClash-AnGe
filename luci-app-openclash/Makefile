@@ -5,6 +5,7 @@ PKG_NAME:=luci-app-openclash
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 PKG_VERSION:=0.47.075
 =======
 PKG_VERSION:=0.47.086
@@ -17,6 +18,9 @@ PKG_VERSION:=0.47.097
 >>>>>>> upstream/master
 =======
 PKG_VERSION:=0.47.110
+>>>>>>> upstream/master
+=======
+PKG_VERSION:=0.47.116
 >>>>>>> upstream/master
 PKG_MAINTAINER:=vernesong <https://github.com/vernesong/OpenClash>
 
