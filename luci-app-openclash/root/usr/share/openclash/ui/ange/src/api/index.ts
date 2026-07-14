@@ -1,12 +1,12 @@
 import { ROUTE_NAME } from '@/constant'
 import { showNotification } from '@/helper/notification'
+import { getUrlFromBackend, shouldUseServerProxy } from '@/helper/utils'
+import router from '@/router'
 import {
   ACCESS_PASSWORD_REQUIRED_CODE,
   fetchServerApi,
   markServerAuthenticationRequired,
 } from '@/store/auth'
-import { getUrlFromBackend, shouldUseServerProxy } from '@/helper/utils'
-import router from '@/router'
 import { autoUpgradeCore, checkUpgradeCore } from '@/store/settings'
 import { activeBackend, activeUuid } from '@/store/setup'
 import type {
@@ -37,7 +37,7 @@ axios.interceptors.request.use((config) => {
   return config
 })
 
-const ignoreNotificationUrls = ['/delay', '/weights']
+const ignoreNotificationUrls = ['/delay', '/healthcheck', '/weights']
 
 axios.interceptors.response.use(
   null,
@@ -127,6 +127,23 @@ export const fetchProxyLatencyAPI = (proxyName: string, url: string, timeout: nu
       timeout,
     },
   })
+}
+
+export const fetchProxyProviderLatencyAPI = (
+  providerName: string,
+  proxyName: string,
+  url: string,
+  timeout: number,
+) => {
+  return axios.get<{ delay: number }>(
+    `/providers/proxies/${encodeURIComponent(providerName)}/${encodeURIComponent(proxyName)}/healthcheck`,
+    {
+      params: {
+        url,
+        timeout,
+      },
+    },
+  )
 }
 
 export const fetchProxyGroupLatencyAPI = (proxyName: string, url: string, timeout: number) => {

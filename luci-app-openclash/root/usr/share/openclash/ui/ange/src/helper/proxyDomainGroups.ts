@@ -85,18 +85,23 @@ export const getCustomDomainGroupSections = (rules: Rule[]) => {
   }
 }
 
-export const getDomainGroupNames = (rules: Rule[], policyGroupNames: string[]) => {
+export const getDomainGroupNames = (
+  rules: Rule[],
+  policyGroupNames: string[],
+  includeEmptyCustomSections = false,
+) => {
   const { pre, post } = getCustomDomainGroupSections(rules)
+  const showCustomSections = includeEmptyCustomSections || pre.length > 0 || post.length > 0
   const orderedPolicyGroupNames = policyGroupNames.filter((name) => !isDomainGroupCustomKey(name))
   const otherIndex = orderedPolicyGroupNames.indexOf('其他')
   const groupsBeforeOther = otherIndex >= 0 ? orderedPolicyGroupNames.slice(0, otherIndex) : orderedPolicyGroupNames
   const groupsFromOther = otherIndex >= 0 ? orderedPolicyGroupNames.slice(otherIndex) : []
 
   return [
-    ...(pre.length > 0 ? [DOMAIN_GROUP_PRE_CUSTOM_KEY] : []),
+    ...(showCustomSections ? [DOMAIN_GROUP_PRE_CUSTOM_KEY] : []),
     ...groupsBeforeOther,
-    ...(post.length > 0 ? [DOMAIN_GROUP_POST_CUSTOM_KEY] : []),
     ...groupsFromOther,
+    ...(showCustomSections ? [DOMAIN_GROUP_POST_CUSTOM_KEY] : []),
   ]
 }
 

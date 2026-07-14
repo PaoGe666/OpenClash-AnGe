@@ -30,3 +30,4 @@ data
 *.tsbuildinfo
 .tmp/
 .tmp-private.mrs
+.runtime/

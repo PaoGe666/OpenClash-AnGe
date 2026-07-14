@@ -5,6 +5,7 @@ import {
   fetchProxyGroupLatencyAPI,
   fetchProxyLatencyAPI,
   fetchProxyProviderAPI,
+  fetchProxyProviderLatencyAPI,
   isSingBox,
   selectProxyAPI,
 } from '@/api'
@@ -239,6 +240,7 @@ export const fetchProxies = async () => {
 
   for (const provider of providers) {
     for (const proxy of provider.proxies) {
+      proxy['provider-name'] ||= provider.name
       allProviderProxies[proxy.name] = proxy
     }
   }
@@ -321,12 +323,38 @@ export const handlerProxySelect = async (proxyGroupName: string, proxyName: stri
   fetchProxies()
 }
 
+const getProviderNameByProxy = (proxyName: string) => {
+  const hinted = proxyMap.value[proxyName]?.['provider-name']
+
+  if (hinted) {
+    return proxyProviederList.value.some((provider) => provider.name === hinted) ? hinted : ''
+  }
+
+  return (
+    proxyProviederList.value.find((provider) =>
+      provider.proxies.some((proxy) => proxy.name === proxyName),
+    )?.name ?? ''
+  )
+}
+
+const fetchNodeLatency = (proxyName: string, url: string, timeout: number) => {
+  if (!isSingBox.value) {
+    const providerName = getProviderNameByProxy(proxyName)
+
+    if (providerName) {
+      return fetchProxyProviderLatencyAPI(providerName, proxyName, url, timeout)
+    }
+  }
+
+  return fetchProxyLatencyAPI(proxyName, url, timeout)
+}
+
 const latencyTestForSingle = async (proxyName: string, url: string, timeout: number) => {
   const now = getNowProxyNodeName(proxyName)
 
   if (IPv6test.value) {
     try {
-      const { data: ipv6LatencyResult } = await fetchProxyLatencyAPI(now, IPV6_TEST_URL, 2000)
+      const { data: ipv6LatencyResult } = await fetchNodeLatency(now, IPV6_TEST_URL, 2000)
 
       IPv6Map.value[now] = ipv6LatencyResult.delay > NOT_CONNECTED
     } catch {
@@ -334,7 +362,7 @@ const latencyTestForSingle = async (proxyName: string, url: string, timeout: num
     }
   }
 
-  return await fetchProxyLatencyAPI(independentLatencyTest.value ? proxyName : now, url, timeout)
+  return await fetchNodeLatency(independentLatencyTest.value ? proxyName : now, url, timeout)
 }
 
 const getNameForNotification = (name: string, url: string) => {
@@ -439,7 +467,11 @@ export const proxyNodesLatencyTest = async (
 ) => {
   if (!nodes.length) return
 
-  const { displayName = scopeName, keyName = scopeName, url = getTestUrl(scopeName) } = options ?? {}
+  const {
+    displayName = scopeName,
+    keyName = scopeName,
+    url = getTestUrl(scopeName),
+  } = options ?? {}
 
   return testLatencyOneByOneWithTip(scopeName, nodes, url, displayName, keyName)
 }
@@ -582,7 +614,10 @@ export const getProxyRouteChain = (name: string) => {
 }
 
 export const getProxyGroupChains = (name: string) => {
-  return [name, ...getProxyRouteChain(name).filter((routeName) => proxyGroupList.value.includes(routeName))]
+  return [
+    name,
+    ...getProxyRouteChain(name).filter((routeName) => proxyGroupList.value.includes(routeName)),
+  ]
 }
 
 export const getProxyFullChains = (name: string) => {

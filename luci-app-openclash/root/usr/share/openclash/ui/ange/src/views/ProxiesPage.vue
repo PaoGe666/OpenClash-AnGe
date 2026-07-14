@@ -77,6 +77,7 @@ import ProxiesCtrl from '@/components/sidebar/ProxiesCtrl.tsx'
 import { usePaddingForViews } from '@/composables/paddingViews'
 import {
   disableProxiesPageScroll,
+  fetchCustomDomainGroupsStatus,
   isProxiesPageMounted,
   nodeGroupBlocks,
   renderGroups,
@@ -140,6 +141,9 @@ watch(proxiesTabShow, () =>
     fetchProxies()
     if (proxiesTabShow.value === PROXY_TAB_TYPE.DOMAIN && rules.value.length === 0) {
       fetchRules()
+    }
+    if (proxiesTabShow.value === PROXY_TAB_TYPE.DOMAIN) {
+      fetchCustomDomainGroupsStatus()
     }
   }),
 )
@@ -241,6 +245,7 @@ onMounted(() => {
       Promise.allSettled([
         fetchProxies(),
         rules.value.length === 0 ? fetchRules() : Promise.resolve(),
+        fetchCustomDomainGroupsStatus(),
       ])
     })
   })
