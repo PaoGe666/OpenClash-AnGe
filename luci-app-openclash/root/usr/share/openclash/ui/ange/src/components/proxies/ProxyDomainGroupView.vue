@@ -423,7 +423,7 @@
                       </span>
                       <span
                         v-if="option.type !== 'builtin'"
-                        class="text-base-content/45 shrink-0 text-xs"
+                        class="text-base-content/45 hidden shrink-0 text-xs md:inline"
                       >
                         {{ option.type === 'group' ? $t('proxyParamGroup') : $t('proxyParamNode') }}
                       </span>

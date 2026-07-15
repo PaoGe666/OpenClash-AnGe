@@ -1103,7 +1103,7 @@ export default defineComponent({
                                     </span>
                                   )}
                                   {option.type !== 'builtin' && (
-                                    <span class="text-base-content/45 shrink-0 text-xs">
+                                    <span class="text-base-content/45 hidden shrink-0 text-xs md:inline">
                                       {option.type === 'group'
                                         ? t('proxyParamGroup')
                                         : t('proxyParamNode')}

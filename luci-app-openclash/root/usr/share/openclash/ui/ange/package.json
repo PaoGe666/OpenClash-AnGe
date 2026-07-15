@@ -1,6 +1,6 @@
 {
   "name": "ange-clashboard",
-  "version": "2.03",
+  "version": "2.04",
   "description": "AnGe-ClashBoard - A dashboard for Clash API, Mihomo and sing-box",
   "license": "MIT",
   "type": "module",
@@ -12,6 +12,7 @@
     "build:no-fonts": "vite build --mode SystemUI",
     "build:pingfang-only": "vite build --mode PingFang",
     "build:sarasa-only": "vite build --mode SarasaUi",
+    "deploy:devboard": "bash scripts/deploy-devboard.sh",
     "dev": "vite",
     "dev:client": "vite",
     "dev:full": "concurrently \"corepack pnpm run dev:server\" \"corepack pnpm run dev:client\"",

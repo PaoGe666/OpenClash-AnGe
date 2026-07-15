@@ -349,16 +349,6 @@ html.apple-mobile-ui {
   #app-content .proxy-domain-tabs-row::-webkit-scrollbar {
     display: none;
   }
-
-  #app-content .proxy-domain-search-row {
-    width: 100%;
-  }
-
-  #app-content .proxy-domain-search-row > .relative {
-    flex: 1 1 0%;
-    min-width: 0;
-    width: auto;
-  }
 }
 
 @for $i from 0 to 100 {

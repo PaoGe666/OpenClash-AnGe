@@ -24,7 +24,7 @@
         </a>
       </div>
       <button
-        class="btn btn-sm absolute top-2 right-2"
+        class="btn btn-sm absolute top-4 right-4"
         @click="refreshPages"
         v-if="isPWA"
       >
