@@ -413,10 +413,9 @@ const en = {
   domainRuleInsertBeforeTypes: 'Insert before configured rule types',
   domainRuleInsertBeforeTypesValue: 'Rule types',
   restartProxy: 'Restart proxy',
-  restartProxyInProgress: 'Restarting proxy…',
-  restartProxyRefreshing: 'Proxy restarted. Refreshing rules and nodes…',
-  restartProxySuccess: 'Proxy restarted successfully',
-  restartProxyFailed: 'Proxy restart failed. Check OpenWrt SSH and service status.',
+  restartProxyCommandSent: 'Restart command sent. Wait 30-60 seconds, then refresh the page.',
+  restartProxyCommandFailed:
+    'Failed to send the restart command. Check OpenWrt SSH and service status.',
   ruleType: 'Rule type',
   ip: 'IP',
   ruleTypeDomainSuffix: 'Domain suffix',

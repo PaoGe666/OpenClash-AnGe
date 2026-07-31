@@ -381,6 +381,26 @@ html.apple-mobile-ui {
       @apply bg-base-200/$(i);
     }
 
+    /* 表格只保留外壳一层半透明底色：内层与奇数行不再叠加涂色，
+       否则多层半透明白色叠加后视觉上接近不透明 */
+    .connection-table-shell tbody tr.bg-base-100,
+    .domain-penetration-table-shell.bg-base-100,
+    .domain-penetration-table-shell tbody tr.bg-base-100,
+    .domain-penetration-table-shell tbody td.bg-base-100 {
+      @apply bg-transparent;
+    }
+
+    /* 半透明下的置顶表头/钉住列补背景模糊，滚动时保持可读 */
+    .connection-table-shell thead,
+    .connection-table-shell .pinned-td,
+    .domain-penetration-table-shell thead {
+      @apply backdrop-blur-sm;
+    }
+
+    .connection-table-shell .pinned-td {
+      @apply bg-base-100/$(i);
+    }
+
     .modal-box {
       @if $i > 70 {
         @apply bg-base-100/$(i);
@@ -727,6 +747,23 @@ div::-webkit-scrollbar-thumb:hover {
 
 .app-card-padding {
   padding: var(--app-space, 0.5rem) !important;
+}
+
+/* Page-level spacing: outer padding of a view's scrollable content and the
+   gap between its top-level cards. Keep every page on these utilities so the
+   page margins stay globally aligned (--app-space is for card-inner spacing).
+   No !important: views may extend the padding inline (e.g. mobile dock/toolbar
+   clearance from usePaddingForViews). */
+.app-page-padding {
+  padding: var(--app-page-space, 0.5rem);
+}
+
+.app-page-gap {
+  gap: var(--app-page-space, 0.5rem);
+}
+
+.app-page-margin {
+  margin: var(--app-page-space, 0.5rem);
 }
 
 .app-inline-gap {

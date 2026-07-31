@@ -1,6 +1,6 @@
 {
   "name": "ange-clashboard",
-  "version": "2.04",
+  "version": "2.06",
   "description": "AnGe-ClashBoard - A dashboard for Clash API, Mihomo and sing-box",
   "license": "MIT",
   "type": "module",
@@ -85,5 +85,12 @@
     "vite": "^7.3.1",
     "vue-tsc": "^3.2.5"
   },
-  "packageManager": "pnpm@10.15.0"
+  "packageManager": "pnpm@10.15.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "cpu-features",
+      "esbuild",
+      "ssh2"
+    ]
+  }
 }

@@ -1,4 +1,9 @@
-import { disconnectByIdAPI, isSingBox, updateProxyProviderAPI } from '@/api'
+import {
+  disconnectByIdAPI,
+  isSingBox,
+  suppressBackendErrorToasts,
+  updateProxyProviderAPI,
+} from '@/api'
 import {
   domainGroups,
   domainGroupSearch,
@@ -41,7 +46,6 @@ import {
   proxyNodesLatencyTest,
   proxyProviederList,
 } from '@/store/proxies'
-import { fetchRules } from '@/store/rules'
 import {
   automaticDisconnection,
   collapseGroupMap,
@@ -566,30 +570,8 @@ export default defineComponent({
       }
     }
 
-    const restartProxyAndReloadDomainRules = async () => {
-      const response = await fetchServerApi('/api/proxy-domain-rules/reload', {
-        method: 'POST',
-      })
-
-      if (!response.ok) {
-        const data = (await response.json().catch(() => null)) as { message?: string } | null
-        throw new Error(data?.message || `Failed to reload proxy rules: ${response.status}`)
-      }
-
-      showNotification({
-        key: 'proxy-restart-progress',
-        content: 'restartProxyRefreshing',
-        type: 'alert-info',
-        timeout: 0,
-      })
-
-      await new Promise<void>((resolve) => {
-        window.setTimeout(resolve, 1000)
-      })
-      await Promise.all([fetchProxies(), fetchRules()])
-      domainRuleConfigChanged.value = false
-      domainRulesReloadRevision.value += 1
-    }
+    // 重启由代理工具自行完成，面板无法可靠感知结果；此窗口内仅抑制误导性的请求错误提示
+    const RESTART_TOAST_SUPPRESS_MS = 60 * 1000
 
     const submitAddDomainRule = async () => {
       if (isAddingDomainRule.value || !canAddDomainRule.value || !domainRuleForm.value.param.trim())
@@ -666,25 +648,34 @@ export default defineComponent({
     const handlerClickRestartProxy = async () => {
       if (isRestartingProxy.value || !domainRuleConfigChanged.value) return
       isRestartingProxy.value = true
-      showNotification({
-        key: 'proxy-restart-progress',
-        content: 'restartProxyInProgress',
-        type: 'alert-info',
-        timeout: 0,
-      })
 
       try {
-        await restartProxyAndReloadDomainRules()
+        const response = await fetchServerApi('/api/proxy-domain-rules/reload', {
+          method: 'POST',
+        })
+
+        if (!response.ok) {
+          const data = (await response.json().catch(() => null)) as { message?: string } | null
+          throw new Error(data?.message || `Failed to reload proxy rules: ${response.status}`)
+        }
+
+        domainRuleConfigChanged.value = false
+        domainRulesReloadRevision.value += 1
+        suppressBackendErrorToasts.value = true
+        window.setTimeout(() => {
+          suppressBackendErrorToasts.value = false
+        }, RESTART_TOAST_SUPPRESS_MS)
         showNotification({
           key: 'proxy-restart-progress',
-          content: 'restartProxySuccess',
-          type: 'alert-success',
+          content: 'restartProxyCommandSent',
+          type: 'alert-info',
+          timeout: 10000,
         })
       } catch (restartError) {
         console.error(restartError)
         showNotification({
           key: 'proxy-restart-progress',
-          content: 'restartProxyFailed',
+          content: 'restartProxyCommandFailed',
           type: 'alert-error',
           timeout: 5000,
         })

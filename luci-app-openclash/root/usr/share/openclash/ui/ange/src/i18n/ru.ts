@@ -421,10 +421,10 @@ const ru: LANG_MESSAGE = {
   domainRuleInsertBeforeTypes: 'Вставить перед указанными типами правил',
   domainRuleInsertBeforeTypesValue: 'Типы правил',
   restartProxy: 'Перезапустить прокси',
-  restartProxyInProgress: 'Перезапуск прокси…',
-  restartProxyRefreshing: 'Прокси перезапущен. Обновление правил и узлов…',
-  restartProxySuccess: 'Прокси успешно перезапущен',
-  restartProxyFailed: 'Не удалось перезапустить прокси. Проверьте SSH и состояние службы OpenWrt.',
+  restartProxyCommandSent:
+    'Команда перезапуска отправлена. Подождите 30-60 секунд и обновите страницу.',
+  restartProxyCommandFailed:
+    'Не удалось отправить команду перезапуска. Проверьте SSH и состояние службы OpenWrt.',
   ruleType: 'Тип правила',
   ip: 'IP',
   ruleTypeDomainSuffix: 'Суффикс домена',

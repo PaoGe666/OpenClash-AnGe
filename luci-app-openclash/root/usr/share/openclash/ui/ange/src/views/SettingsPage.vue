@@ -12,10 +12,10 @@
       @scroll.passive="handleScroll"
     >
       <div
-        class="grid grid-cols-1 gap-2 p-2"
+        class="app-page-gap app-page-padding grid grid-cols-1"
         :style="padding"
       >
-        <div class="flex flex-col gap-2">
+        <div class="app-page-gap flex flex-col">
           <div
             v-for="item in menuItems"
             :key="item.key"

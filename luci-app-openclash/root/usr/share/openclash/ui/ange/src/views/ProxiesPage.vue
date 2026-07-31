@@ -13,11 +13,11 @@
       @scroll.passive="handleScroll"
     >
       <template v-if="displayTwoColumns">
-        <div class="grid grid-cols-2 gap-2 p-2">
+        <div class="app-page-gap app-page-padding grid grid-cols-2">
           <div
             v-for="idx in [0, 1]"
             :key="idx"
-            class="flex flex-1 flex-col gap-2"
+            class="app-page-gap flex flex-1 flex-col"
           >
             <template v-if="proxiesTabShow === PROXY_TAB_TYPE.NODE">
               <ProxyGroupUnit
@@ -38,12 +38,12 @@
       </template>
       <div
         v-else-if="proxiesTabShow === PROXY_TAB_TYPE.DOMAIN"
-        class="flex h-full min-h-0 flex-1 flex-col overflow-hidden p-2"
+        class="app-page-padding flex h-full min-h-0 flex-1 flex-col overflow-hidden"
       >
         <ProxyDomainGroupView class="min-h-0 flex-1" />
       </div>
       <div
-        class="grid grid-cols-1 gap-2 p-2"
+        class="app-page-gap app-page-padding grid grid-cols-1"
         v-else
       >
         <template v-if="proxiesTabShow === PROXY_TAB_TYPE.NODE">

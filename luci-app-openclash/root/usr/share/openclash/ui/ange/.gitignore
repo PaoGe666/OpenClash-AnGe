@@ -31,3 +31,4 @@ data
 .tmp/
 .tmp-private.mrs
 .runtime/
+.devboard-server.pid

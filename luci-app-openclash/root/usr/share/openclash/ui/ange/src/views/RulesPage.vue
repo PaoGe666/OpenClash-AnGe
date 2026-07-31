@@ -6,7 +6,7 @@
         class="min-h-0 flex-1 overflow-x-hidden overflow-y-auto"
         :style="padding"
       >
-        <div class="flex flex-col gap-3 p-3">
+        <div class="app-page-gap app-page-padding flex flex-col">
           <template
             v-if="
               (rulesTabShow === RULE_TAB_TYPE.RULES || rulesTabShow === RULE_TAB_TYPE.PROVIDER) &&

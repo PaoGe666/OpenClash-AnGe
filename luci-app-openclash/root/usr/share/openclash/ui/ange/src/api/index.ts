@@ -39,6 +39,9 @@ axios.interceptors.request.use((config) => {
 
 const ignoreNotificationUrls = ['/delay', '/healthcheck', '/weights']
 
+// 重启内核等已知的后端不可用窗口内置为 true，避免期间的请求失败弹出误导性错误提示
+export const suppressBackendErrorToasts = ref(false)
+
 axios.interceptors.response.use(
   null,
   (
@@ -68,11 +71,13 @@ axios.interceptors.response.use(
     } else if (!ignoreNotificationUrls.some((url) => error.config?.url?.endsWith(url))) {
       const errorMessage = error.response?.data?.message || error.message
 
-      showNotification({
-        key: errorMessage,
-        content: `${error.config?.url} \n${errorMessage}`,
-        type: 'alert-error',
-      })
+      if (!suppressBackendErrorToasts.value) {
+        showNotification({
+          key: errorMessage,
+          content: `${error.config?.url} \n${errorMessage}`,
+          type: 'alert-error',
+        })
+      }
       return Promise.reject(error)
     }
 
