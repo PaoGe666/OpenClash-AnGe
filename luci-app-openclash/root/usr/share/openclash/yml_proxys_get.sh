@@ -1627,5 +1627,4 @@ ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
 " >> $LOG_FILE
 
 LOG_OUT "Config File【$CONFIG_NAME】Read Successful!"
-SLOG_CLEAN
 del_lock
